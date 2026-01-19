@@ -161,8 +161,6 @@ const Header = () => {
 
               {/* Modern Action Buttons */}
               <div className="flex items-center gap-3">
-                <StatusIndicator />
-                
                 {/* Ultra-Modern Dark Mode Toggle */}
                 <button
                   onClick={toggleDarkMode}
