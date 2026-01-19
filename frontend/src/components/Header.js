@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import Breadcrumb from './Breadcrumb';
 import NotificationCenter from './NotificationCenter';
-import StatusIndicator from './StatusIndicator';
 
 const Header = () => {
   const { isDarkMode, toggleDarkMode } = useTheme();
