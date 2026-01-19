@@ -188,17 +188,6 @@ const Dashboard = () => {
 
   const stats = [
     {
-      title: 'Total Modules',
-      value: modules.length,
-      icon: '🎯',
-      gradient: {
-        dark: 'from-blue-900/30 to-indigo-900/30',
-        light: 'from-blue-50 to-indigo-50',
-        border: { dark: 'border-blue-700/50', light: 'border-blue-200/50' },
-        icon: 'from-blue-400 to-indigo-500'
-      }
-    },
-    {
       title: 'System Status',
       value: 'Operational',
       icon: '✓',
@@ -207,17 +196,6 @@ const Dashboard = () => {
         light: 'from-green-50 to-emerald-50',
         border: { dark: 'border-green-700/50', light: 'border-green-200/50' },
         icon: 'from-green-400 to-emerald-500'
-      }
-    },
-    {
-      title: 'Offline Support',
-      value: 'Enabled',
-      icon: '💾',
-      gradient: {
-        dark: 'from-purple-900/30 to-pink-900/30',
-        light: 'from-purple-50 to-pink-50',
-        border: { dark: 'border-purple-700/50', light: 'border-purple-200/50' },
-        icon: 'from-purple-400 to-pink-500'
       }
     }
   ];
