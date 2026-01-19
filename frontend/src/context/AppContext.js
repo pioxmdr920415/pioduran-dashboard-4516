@@ -82,7 +82,7 @@ export const AppProvider = ({ children }) => {
     } finally {
       setIsSyncing(false);
     }
-  }, [isOnline, isSyncing]);
+  }, [isOnline, isSyncing, showToast]);
 
   // Validate synced data
   const validateSyncedData = useCallback(async (syncResult) => {
@@ -106,7 +106,7 @@ export const AppProvider = ({ children }) => {
       console.error('Validation error during sync:', error);
       showToast('Data validation failed during sync', 'warning');
     }
-  }, []);
+  }, [showToast]);
 
   // Validate cached sheet data
   const validateCachedSheetData = useCallback(async (sheetName, data) => {
@@ -141,7 +141,7 @@ export const AppProvider = ({ children }) => {
     } catch (error) {
       console.error(`Validation error for sheet ${sheetName}:`, error);
     }
-  }, []);
+  }, [showToast]);
 
   // Validate cached drive data
   const validateCachedDriveData = useCallback(async (folderId, data) => {
@@ -176,7 +176,7 @@ export const AppProvider = ({ children }) => {
     } catch (error) {
       console.error(`Validation error for drive folder ${folderId}:`, error);
     }
-  }, []);
+  }, [showToast]);
 
   // Show toast notification
   const showToast = useCallback((message, type = 'info') => {
@@ -239,7 +239,7 @@ export const AppProvider = ({ children }) => {
       }
       return newResults;
     });
-  }, []);
+  }, [dataValidationService]);
 
   const value = {
     isOnline,

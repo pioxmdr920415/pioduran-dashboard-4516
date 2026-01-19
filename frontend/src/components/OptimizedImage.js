@@ -38,11 +38,12 @@ const OptimizedImage = ({
       }
     );
 
-    observer.observe(imgRef.current);
+    const currentImg = imgRef.current;
+    observer.observe(currentImg);
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
+      if (currentImg) {
+        observer.unobserve(currentImg);
       }
     };
   }, []);

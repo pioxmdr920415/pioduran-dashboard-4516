@@ -137,7 +137,7 @@ const MapInitializer = ({ setMapRef, mapType, center, zoom, setDrawControl, setM
         map.off('moveend', handleMoveEnd);
         map.off('zoomend', handleMoveEnd);
       };
-    }, [map, offlineMode, getTileWithCache]);
+    }, [offlineMode]);
 
     return null;
   };

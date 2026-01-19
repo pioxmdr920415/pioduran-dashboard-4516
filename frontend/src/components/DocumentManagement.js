@@ -184,9 +184,9 @@ const VersionsPanel = ({ file, onViewVersion, onDownloadVersion, onRestoreVersio
 
   useEffect(() => {
     loadVersions();
-  }, [file?.id]);
+  }, [file?.id, loadVersions]);
 
-  const loadVersions = async () => {
+  const loadVersions = useCallback(async () => {
     if (!file?.id) return;
     setIsLoading(true);
     try {
@@ -231,7 +231,7 @@ const VersionsPanel = ({ file, onViewVersion, onDownloadVersion, onRestoreVersio
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [file, showToast]);
 
   const handleSelectVersion = (versionId) => {
     setSelectedVersions(prev => {
@@ -1427,7 +1427,7 @@ const DocumentManagement = () => {
 
   useEffect(() => {
     loadRootFolder();
-  }, []);
+  }, [loadRootFolder]);
 
   // Update displayed files when selection changes
   useEffect(() => {
@@ -1438,7 +1438,7 @@ const DocumentManagement = () => {
     }
   }, [rootFolderData, selectedFolderId, folderContents]);
 
-  const loadRootFolder = async () => {
+  const loadRootFolder = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await fetchDriveFolder(DOCUMENT_ROOT_FOLDER);
@@ -1458,7 +1458,7 @@ const DocumentManagement = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast, cacheDriveFolderData, getCachedDriveFolderData]);
 
   const loadFolderContents = async (folderId) => {
     if (folderContents[folderId]) return folderContents[folderId];

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchSheetData } from '../utils/api';
 import { useApp } from '../context/AppContext';
@@ -50,11 +50,7 @@ const ContactDirectory = () => {
     showToast('Print dialog opened', 'info');
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await fetchSheetData('contact');
@@ -74,7 +70,11 @@ const ContactDirectory = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast, cacheSheetData, getCachedSheetData]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   useEffect(() => {
     if (!searchTerm) {
