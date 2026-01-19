@@ -9,7 +9,7 @@ const isDevServer = process.env.NODE_ENV !== "production";
 // Environment variable overrides
 const config = {
   enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true",
-  enableVisualEdits: isDevServer, // Only enable during dev server
+  enableVisualEdits: false, // Temporarily disabled to avoid recursion issues
 };
 
 // Conditionally load visual edits modules only in dev mode
@@ -60,6 +60,85 @@ const webpackConfig = {
             '**/public/**',
         ],
       };
+
+      // Production optimizations
+      if (process.env.NODE_ENV === 'production') {
+        // Enable source maps for debugging but with better compression
+        webpackConfig.devtool = 'source-map';
+        
+        // Optimize bundle splitting
+        webpackConfig.optimization = {
+          ...webpackConfig.optimization,
+          runtimeChunk: 'single',
+          chunkIds: 'deterministic', // Use deterministic chunk IDs for consistent naming
+          splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+              // Vendor chunks for better caching
+              vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name(module) {
+                  const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+                  if (!match || !match[1]) {
+                    return 'vendor.other';
+                  }
+                  const packageName = match[1];
+                  // Simplify package name to prevent overly long chunk names
+                  const simplifiedName = packageName
+                    .replace('@', '')
+                    .replace(/^lucide-react.*/, 'lucide-react')
+                    .split('/')[0]; // Take only the main package name
+                  return `vendor.${simplifiedName}`;
+                },
+                priority: 10,
+              },
+              // Common chunks
+              common: {
+                minChunks: 2,
+                priority: 5,
+                reuseExistingChunk: true,
+              },
+              // React and React-DOM
+              react: {
+                test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/,
+                name: 'react-vendor',
+                priority: 20,
+              },
+              // UI libraries
+              ui: {
+                test: /[\\/]node_modules[\\/](@radix-ui)[\\/]/,
+                name: 'ui-vendor',
+                priority: 15,
+              },
+              // Map libraries
+              maps: {
+                test: /[\\/]node_modules[\\/](leaflet|@react-leaflet)[\\/]/,
+                name: 'maps-vendor',
+                priority: 15,
+              },
+              // Lucide React icons - prevent overly long chunk names
+              lucide: {
+                test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
+                name: 'vendor.lucide-react',
+                priority: 25,
+              },
+            },
+          },
+          // Minimize and optimize
+          minimize: true,
+        };
+
+        // Add compression
+        const CompressionPlugin = require('compression-webpack-plugin');
+        webpackConfig.plugins.push(
+          new CompressionPlugin({
+            algorithm: 'gzip',
+            test: /\.(js|css|html|svg)$/,
+            threshold: 8192,
+            minRatio: 0.8,
+          })
+        );
+      }
 
       // Add health check plugin to webpack if enabled
       if (config.enableHealthCheck && healthPluginInstance) {
