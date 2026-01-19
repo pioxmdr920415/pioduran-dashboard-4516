@@ -54,6 +54,9 @@ const AppContent = () => {
           <Route path="/maps" element={<MapsViewer />} />
         </Routes>
       </Suspense>
+
+      {/* Bottom Status Bar */}
+      <BottomStatusBar />
     </div>
   );
 };
