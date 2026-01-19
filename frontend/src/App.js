@@ -6,6 +6,7 @@ import { NotificationProvider } from './context/NotificationContext';
 import Toast from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
 import PWAInstallationPrompt from './components/PWAInstallationPrompt';
+import BottomStatusBar from './components/BottomStatusBar';
 import './App.css';
 
 // Lazy load components for code splitting
