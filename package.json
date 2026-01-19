@@ -35,5 +35,9 @@
     "mongodb"
   ],
   "author": "MDRRMO Pio Duran",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@photo-sphere-viewer/gallery-plugin": "^5.14.1",
+    "photoswipe": "^5.4.4"
+  }
 }
